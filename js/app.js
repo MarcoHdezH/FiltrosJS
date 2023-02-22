@@ -96,9 +96,24 @@ function llenarSelect(){
 
 function filtrarAuto(){
     const resultado = autos.filter( filtrarMarca).filter( filtraryear).filter(filtrarPuertas)
-                        .filter(filtrarTransmision).filter(filtrarColor).filter(filtrarPuertas).filter(filtrarMinimo).filter(filtrarMaximo);
+                    .filter(filtrarTransmision).filter(filtrarColor).filter(filtrarPuertas).filter(filtrarMinimo).filter(filtrarMaximo);
 
-    mostrarAutos(resultado);
+
+    if(resultado.length){
+        mostrarAutos(resultado);
+    }else{
+        noResultado();
+    }
+}
+
+function noResultado(){
+    limpiarHTML();
+    
+    const noResultado = document.createElement('div');
+    noResultado.classList.add('alerta','error');
+    noResultado.textContent = 'Sin Resultados';
+
+    resultado.appendChild(noResultado);
 }
 
 function filtrarMarca(auto){
