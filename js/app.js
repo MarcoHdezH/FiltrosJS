@@ -22,7 +22,7 @@ const datosBusqueda ={
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-    mostrarAutos(); //Mostrar Automoviles
+    mostrarAutos( autos ); //Mostrar Automoviles
 
     llenarSelect(); //Llena el Select de Años
 });
@@ -30,22 +30,26 @@ document.addEventListener('DOMContentLoaded',()=>{
 //Generar un Objeto con cada Select
 marca.addEventListener('change', (e)=>{
     datosBusqueda.marca = e.target.value;
+
+    filtrarAuto();
 });
 
 year.addEventListener('change', (e)=>{
-    datosBusqueda.year = e.target.value;
+    datosBusqueda.year = parseInt(e.target.value);
+
+    filtrarAuto();
 });
 
 minimo.addEventListener('change', (e)=>{
-    datosBusqueda.minimo = e.target.value;
+    datosBusqueda.minimo = parseInt(e.target.value);
 });
 
 maximo.addEventListener('change', (e)=>{
-    datosBusqueda.maximo = e.target.value;
+    datosBusqueda.maximo = parseInt(e.target.value);
 });
 
 puertas.addEventListener('change', (e)=>{
-    datosBusqueda.puertas = e.target.value;
+    datosBusqueda.puertas = parseInt(e.target.value);
 });
 
 transmision.addEventListener('change', (e)=>{
@@ -56,7 +60,8 @@ color.addEventListener('change', (e)=>{
     datosBusqueda.color = e.target.value;
 });
 
-function mostrarAutos(){
+function mostrarAutos( autos ){
+    limpiarHTML();
     autos.forEach(auto => {
 
         const {marca,modelo,year,puertas,transmision,precio,color} = auto; 
@@ -69,6 +74,12 @@ function mostrarAutos(){
     });
 }
 
+function limpiarHTML(){
+    while(resultado.firstChild){
+        resultado.removeChild(resultado.firstChild)
+    }
+}
+
 function llenarSelect(){
     for(let i=max; i >= min; i-- ){
         const opcion = document.createElement('option');
@@ -76,4 +87,34 @@ function llenarSelect(){
         opcion.textContent = i;
         year.appendChild(opcion); //Agrega las opciones de Año
     }
+}
+
+function filtrarAuto(){
+    const resultado = autos.filter( filtrarMarca).filter( filtraryear).filter(filtrarPuertas);
+
+    mostrarAutos(resultado);
+}
+
+function filtrarMarca(auto){
+    const { marca } = datosBusqueda;
+    if(marca){
+        return auto.marca === marca;
+    }
+    return auto;
+}
+
+function filtraryear(auto){
+    const { year } = datosBusqueda;
+    if(year){
+        return auto.year === year;
+    }
+    return auto;
+}
+
+function filtrarPuertas(auto){
+    const { puertas } = datosBusqueda;
+    if(puertas){
+        return auto.puertas === puertas;
+    }
+    return auto;
 }
